@@ -1,0 +1,46 @@
+{
+  "name": "scratch-to-html-converter",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Free, privacy-friendly Scratch .sb/.sb2/.sb3 to standalone HTML converter for browser and offline use.",
+  "license": "MPL-2.0",
+  "author": "Wojciech Lepczynski",
+  "homepage": "https://github.com/lepczynski-cloud/scratch-to-html-converter",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lepczynski-cloud/scratch-to-html-converter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lepczynski-cloud/scratch-to-html-converter/issues"
+  },
+  "keywords": [
+    "scratch",
+    "scratch3",
+    "sb3",
+    "html",
+    "converter",
+    "turbowarp",
+    "browser",
+    "offline",
+    "privacy",
+    "cloudflare-workers",
+    "static-site",
+    "javascript"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "clean": "node scripts/clean.mjs",
+    "verify": "node scripts/verify.mjs",
+    "serve": "node scripts/serve.mjs dist 8080",
+    "deploy": "wrangler deploy",
+    "deploy:preview": "wrangler preview",
+    "preview": "wrangler dev",
+    "verify:dist": "node scripts/check-dist.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "4.147.0"
+  }
+}

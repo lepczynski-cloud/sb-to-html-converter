@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developers.cloudflare.com/workers/wrangler/config-schema.json",
+  "name": "scratch-to-html-converter",
+  "compatibility_date": "2026-10-04",
+  "workers_dev": true,
+  "preview_urls": true,
+  "previews": {},
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}

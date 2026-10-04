@@ -1,0 +1,14 @@
+Scratch to HTML Converter
+Copyright (C) 2026 Wojciech Lepczynski
+
+This project is based on TurboWarp Packager 3.13.0:
+https://github.com/TurboWarp/packager
+Copyright (C) 2021-2024 Thomas Weber and contributors.
+TurboWarp Packager is licensed under the Mozilla Public License 2.0.
+
+The build downloads the exact upstream tag declared in config/upstream.json,
+applies the files from overrides/, and creates both a hosted static application
+and a single-file offline application.
+
+Scratch is a project of the Scratch Foundation. This project is independent and
+is not affiliated with or endorsed by the Scratch Foundation or TurboWarp.

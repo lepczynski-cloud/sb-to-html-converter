@@ -145,7 +145,7 @@ const offlineDirectory = path.join(distDirectory, 'offline');
 mkdirSync(offlineDirectory, {recursive: true});
 copyFileSync(
   standaloneSource,
-  path.join(offlineDirectory, 'scratch-to-html-converter.html')
+  path.join(offlineDirectory, 'sb-to-html-converter.html')
 );
 
 if (existsSync(extraStaticDirectory)) {
@@ -181,4 +181,4 @@ writeFileSync(
 console.log('');
 console.log(`Build complete: ${distDirectory}`);
 console.log(`Hosted version: ${buildVersion}`);
-console.log('Offline file: dist/offline/scratch-to-html-converter.html');
+console.log('Offline file: dist/offline/sb-to-html-converter.html');

@@ -1,9 +1,15 @@
 {
   "$schema": "https://developers.cloudflare.com/workers/wrangler/config-schema.json",
-  "name": "scratch-to-html-converter",
+  "name": "sb-to-html-converter",
   "compatibility_date": "2026-10-04",
-  "workers_dev": true,
+  "workers_dev": false,
   "preview_urls": true,
+  "routes": [
+    {
+      "pattern": "sbtohtml.lepczynski.it",
+      "custom_domain": true
+    }
+  ],
   "previews": {},
   "assets": {
     "directory": "./dist",

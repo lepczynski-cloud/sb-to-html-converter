@@ -6,7 +6,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
 const requiredFiles = [
   'index.html',
-  'offline/scratch-to-html-converter.html',
+  'offline/sb-to-html-converter.html',
   'build-info.json',
   'version.txt',
   'LICENSE.txt',
@@ -25,7 +25,7 @@ for (const relativePath of requiredFiles) {
 
 if (failures.length === 0) {
   const index = readFileSync(path.join(dist, 'index.html'), 'utf8');
-  const offlinePath = path.join(dist, 'offline', 'scratch-to-html-converter.html');
+  const offlinePath = path.join(dist, 'offline', 'sb-to-html-converter.html');
   const offline = readFileSync(offlinePath, 'utf8');
   const buildInfo = JSON.parse(readFileSync(path.join(dist, 'build-info.json'), 'utf8'));
   const upstream = JSON.parse(readFileSync(path.join(root, 'config', 'upstream.json'), 'utf8'));

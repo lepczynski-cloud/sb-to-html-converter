@@ -7,9 +7,9 @@
 
   const dictionaries = {
     pl: {
-      pageTitle: 'Scratch do HTML — konwerter działający lokalnie',
+      pageTitle: 'SB do HTML | konwerter działający lokalnie',
       metaDescription: 'Zamień projekt Scratch .sb, .sb2 lub .sb3 w samodzielny plik HTML bez wysyłania projektu na serwer.',
-      brand: 'Scratch → HTML',
+      brand: 'SB → HTML',
       localBadge: 'Przetwarzanie lokalne',
       heroTitle: 'Zamień projekt Scratch w samodzielny plik HTML',
       heroText: 'Upuść plik .sb, .sb2 lub .sb3. Konwersja odbywa się w Twojej przeglądarce, a gotową grę pobierzesz jako jeden plik HTML.',
@@ -26,7 +26,7 @@
       formats: 'Obsługiwane formaty: .sb, .sb2, .sb3',
       selectedFile: 'Wybrany plik',
       removeFile: 'Usuń',
-      largeFile: 'To duży projekt. Konwersja może wymagać dużo pamięci — najlepiej użyj komputera i zamknij zbędne karty.',
+      largeFile: 'To duży projekt. Konwersja może wymagać dużo pamięci, dlatego najlepiej użyj komputera i zamknij zbędne karty.',
       settingsTitle: 'Ustawienia gry',
       settingsHint: 'Opcjonalne',
       gameTitle: 'Tytuł gry',
@@ -39,8 +39,8 @@
       controls: 'Pokaż zieloną flagę i Stop',
       fullscreen: 'Pokaż przycisk pełnego ekranu',
       cloudVariables: 'Zmienne chmurowe',
-      cloudLocal: 'Lokalne — zalecane do pracy offline',
-      cloudServer: 'Serwer TurboWarp — wymaga Internetu',
+      cloudLocal: 'Lokalne, zalecane do pracy offline',
+      cloudServer: 'Serwer TurboWarp, wymaga Internetu',
       cloudIgnore: 'Ignoruj',
       cloudHelp: 'Tryb lokalny zapisuje wartości tylko w danej przeglądarce i nie synchronizuje graczy.',
       customExtensionConfirm: 'Ten projekt używa niestandardowych rozszerzeń. Ich kod może zostać pobrany i będzie uruchamiany bez sandboxa w wygenerowanej grze. Kontynuuj tylko, jeśli ufasz projektowi i źródłom rozszerzeń. Kontynuować?',
@@ -83,9 +83,9 @@
       }
     },
     en: {
-      pageTitle: 'Scratch to HTML — local browser converter',
+      pageTitle: 'SB to HTML Converter | Local browser converter',
       metaDescription: 'Convert a Scratch .sb, .sb2 or .sb3 project to a standalone HTML file without uploading the project to a server.',
-      brand: 'Scratch → HTML',
+      brand: 'SB → HTML',
       localBadge: 'Local processing',
       heroTitle: 'Turn a Scratch project into a standalone HTML file',
       heroText: 'Drop an .sb, .sb2 or .sb3 file. The conversion runs in your browser and downloads the finished game as a single HTML file.',
@@ -102,7 +102,7 @@
       formats: 'Supported formats: .sb, .sb2, .sb3',
       selectedFile: 'Selected file',
       removeFile: 'Remove',
-      largeFile: 'This is a large project. Conversion may use a lot of memory — use a desktop computer and close unnecessary tabs.',
+      largeFile: 'This is a large project. Conversion may use a lot of memory, so use a desktop computer and close unnecessary tabs.',
       settingsTitle: 'Game settings',
       settingsHint: 'Optional',
       gameTitle: 'Game title',
@@ -115,8 +115,8 @@
       controls: 'Show green flag and Stop',
       fullscreen: 'Show fullscreen button',
       cloudVariables: 'Cloud variables',
-      cloudLocal: 'Local — recommended for offline use',
-      cloudServer: 'TurboWarp server — Internet required',
+      cloudLocal: 'Local, recommended for offline use',
+      cloudServer: 'TurboWarp server, Internet required',
       cloudIgnore: 'Ignore',
       cloudHelp: 'Local mode stores values only in that browser and does not synchronize players.',
       customExtensionConfirm: 'This project uses custom extensions. Their code may be downloaded and will run without a sandbox in the generated game. Continue only if you trust the project and extension sources. Continue?',
@@ -160,7 +160,7 @@
     }
   };
 
-  let language = 'pl';
+  let language = 'en';
   let selectedFile = null;
   let gameTitle = '';
   let isDragging = false;
@@ -196,10 +196,8 @@
   onMount(() => {
     let savedLanguage = '';
     try {
-      savedLanguage = localStorage.getItem('scratch-to-html-language') || '';
-    } catch (error) {
-      // Storage can be unavailable in strict privacy modes. Language switching still works.
-    }
+      savedLanguage = localStorage.getItem('sb-to-html-language') || '';
+    } catch (error) {}
     const browserLanguage = navigator.language && navigator.language.toLowerCase().startsWith('pl')
       ? 'pl'
       : 'en';
@@ -210,10 +208,8 @@
     language = nextLanguage === 'pl' ? 'pl' : 'en';
     document.documentElement.lang = language;
     try {
-      localStorage.setItem('scratch-to-html-language', language);
-    } catch (error) {
-      // Ignore storage failures.
-    }
+      localStorage.setItem('sb-to-html-language', language);
+    } catch (error) {}
   }
 
   function formatBytes(bytes) {
@@ -224,7 +220,7 @@
     return `${value.toFixed(index === 0 || value >= 10 ? 0 : 1)} ${units[index]}`;
   }
 
-  function stripScratchExtension(name) {
+  function stripProjectExtension(name) {
     return name.replace(/\.(sb|sb2|sb3)$/i, '');
   }
 
@@ -234,7 +230,7 @@
       .replace(/[. ]+$/g, '')
       .trim()
       .slice(0, 120);
-    return cleaned || 'scratch-game';
+    return cleaned || 'converted-project';
   }
 
   function simpleHash(value) {
@@ -262,7 +258,7 @@
       return;
     }
     selectedFile = file;
-    gameTitle = stripScratchExtension(file.name).trim() || 'Scratch game';
+    gameTitle = stripProjectExtension(file.name).trim() || 'Converted project';
     statusKey = 'selected';
   }
 
@@ -323,7 +319,7 @@
       stageVariables: [],
       extensions: []
     };
-    const title = gameTitle.trim() || stripScratchExtension(selectedFile.name) || 'Scratch game';
+    const title = gameTitle.trim() || stripProjectExtension(selectedFile.name) || 'Converted project';
 
     options.target = 'html';
     options.turbo = turbo;
@@ -521,7 +517,7 @@
         <div class="alert error" role="alert">{t.browserUnsupported}</div>
       {:else}
         <input
-          id="scratch-project-file"
+          id="project-file"
           class="file-input"
           type="file"
           accept=".sb,.sb2,.sb3"
@@ -529,7 +525,7 @@
           on:change={handleFileInput}
         >
         <label
-          for="scratch-project-file"
+          for="project-file"
           class="drop-zone"
           class:dragging={isDragging}
           class:disabled={busy}
@@ -662,7 +658,7 @@
         <p>{isStandalone ? t.standaloneText : t.offlineText}</p>
       </div>
       {#if !isStandalone}
-        <a class="secondary-button offline-download" href="./offline/scratch-to-html-converter.html" download>
+        <a class="secondary-button offline-download" href="./offline/sb-to-html-converter.html" download>
           {t.offlineButton}
         </a>
       {/if}

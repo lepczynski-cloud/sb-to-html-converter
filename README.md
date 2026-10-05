@@ -1,244 +1,127 @@
-# Scratch to HTML Converter
+# SB to HTML Converter
 
-Darmowy, dwujęzyczny konwerter projektów Scratch do samodzielnego pliku HTML.
-Konwersja odbywa się lokalnie w przeglądarce. Repozytorium buduje również
-pojedynczy plik HTML z całym konwerterem, który można pobrać i uruchamiać z dysku.
+Convert Scratch `.sb`, `.sb2`, and `.sb3` project files into a standalone HTML file that can be opened in a modern browser.
 
-Free, bilingual Scratch-to-HTML converter. Conversion runs locally in the
-browser, and the same source also produces a single-file offline converter.
+**Online version:** [sbtohtml.lepczynski.it](https://sbtohtml.lepczynski.it)
 
-## Metadane repozytorium / Repository metadata
+## English
 
-**Nazwa / Name:** `scratch-to-html-converter`
+### Use the online converter
 
-**Opis / Description:**
+1. Open the [online converter](https://sbtohtml.lepczynski.it).
+2. Drop an `.sb`, `.sb2`, or `.sb3` file onto the page, or select it from your device.
+3. Adjust the optional settings when needed.
+4. Convert the project and download the generated HTML file.
 
-> Free, privacy-friendly Scratch .sb/.sb2/.sb3 to standalone HTML converter. Runs in the browser and as a downloadable offline HTML app.
+The project is processed locally in the browser and is not uploaded to this application's server.
 
-**Topics:**
+### Use the converter offline
 
-`scratch`, `scratch3`, `sb3`, `html`, `converter`, `turbowarp`, `browser`,
-`offline`, `privacy`, `static-site`, `cloudflare-workers`, `javascript`
+Download the standalone HTML converter from the [latest GitHub release](https://github.com/lepczynski-cloud/sb-to-html-converter/releases/latest), then open it directly in a current version of Chrome, Edge, Firefox, or Safari.
 
-**Licencja / License:** Mozilla Public License 2.0 (`MPL-2.0`)
+You can also build the offline converter from source.
+
+Requirements:
+
+- Node.js 24 or newer
+- Git
+- Internet access during the first build
+
+```bash
+git clone https://github.com/lepczynski-cloud/sb-to-html-converter.git
+cd sb-to-html-converter
+npm install
+npm run verify
+npm run build
+```
+
+The standalone converter is generated as:
+
+```text
+dist/offline/sb-to-html-converter.html
+```
+
+Open that file directly from disk. To run the hosted version locally:
+
+```bash
+npm run serve
+```
+
+Then open `http://127.0.0.1:8080`.
+
+### Important limitations
+
+- Large projects can exceed the available browser memory, especially on mobile devices.
+- Custom extensions may require Internet access during conversion and run without a sandbox in the generated game.
+- A generated game may still connect to external services when the original project uses them.
+- Compatibility depends on the blocks, extensions, and features used by the project.
+
+Only convert and publish projects for which you have the necessary rights.
+
+### License and attribution
+
+This project is licensed under the [Mozilla Public License 2.0](LICENSE) and is based on [TurboWarp Packager](https://github.com/TurboWarp/packager). See [NOTICE](NOTICE) for attribution.
+
+Scratch is a project of the Scratch Foundation. This repository is independent and is not affiliated with or endorsed by the Scratch Foundation or TurboWarp.
 
 ---
 
 ## Polski
 
-### Co potrafi
+### Użycie wersji online
 
-- konwertuje pliki `.sb`, `.sb2` i `.sb3` do jednego pliku `.html`;
-- działa lokalnie w przeglądarce — projekt nie jest wysyłany do serwera aplikacji;
-- ma polski i angielski interfejs z zapamiętywaniem wyboru;
-- obsługuje przeciąganie pliku oraz klasyczny wybór z dysku;
-- pozwala włączyć Turbo, interpolację, autostart, przyciski sterowania i pełny ekran;
-- pozwala wybrać sposób działania zmiennych chmurowych;
-- buduje wersję online oraz pojedynczy plik konwertera działający offline;
-- publikuje nową wersję strony z każdego pushu do `main` przez Cloudflare Workers Builds;
-- tworzy trwałe wydania GitHub Release dopiero po dodaniu tagu wersji.
+1. Otwórz [konwerter online](https://sbtohtml.lepczynski.it).
+2. Przeciągnij plik `.sb`, `.sb2` lub `.sb3` na stronę albo wybierz go z urządzenia.
+3. W razie potrzeby zmień opcjonalne ustawienia.
+4. Uruchom konwersję i pobierz wygenerowany plik HTML.
 
-### Dlaczego repozytorium nie używa bezpośrednio pakietu npm w przeglądarce
+Projekt jest przetwarzany lokalnie w przeglądarce i nie jest wysyłany na serwer tej aplikacji.
 
-Pakiet `@turbowarp/packager` jest API dla Node.js i nie jest przeznaczony do
-bezpośredniego użycia w kodzie przeglądarkowym. Dlatego build pobiera dokładnie
-przypięty tag źródeł TurboWarp Packager, nakłada prosty interfejs z katalogu
-`overrides/`, a następnie buduje oficjalny wariant webowy i standalone.
+### Użycie konwertera offline
 
-Wersja TurboWarp jest przypięta w `config/upstream.json` jako numer wydania, tag
-i pełny SHA commita. Nie zamieniaj jej na `latest`. API i struktura projektu
-upstream mogą zmienić się także między wydaniami innymi niż major.
+Pobierz samodzielny konwerter HTML z [najnowszego wydania na GitHubie](https://github.com/lepczynski-cloud/sb-to-html-converter/releases/latest), a następnie otwórz go bezpośrednio w aktualnej wersji Chrome, Edge, Firefox lub Safari.
 
-### Szybki start lokalny dla dewelopera
+Konwerter offline można również zbudować ze źródeł.
 
 Wymagania:
 
-- Node.js 24 lub nowszy;
-- Git;
-- dostęp do Internetu podczas pierwszego buildu.
+- Node.js 24 lub nowszy
+- Git
+- dostęp do Internetu podczas pierwszego buildu
 
 ```bash
+git clone https://github.com/lepczynski-cloud/sb-to-html-converter.git
+cd sb-to-html-converter
 npm install
 npm run verify
 npm run build
+```
+
+Samodzielny konwerter zostanie utworzony jako:
+
+```text
+dist/offline/sb-to-html-converter.html
+```
+
+Ten plik można otworzyć bezpośrednio z dysku. Aby uruchomić lokalnie wersję przeznaczoną do hostowania:
+
+```bash
 npm run serve
 ```
 
-Następnie otwórz:
+Następnie otwórz `http://127.0.0.1:8080`.
 
-```text
-http://127.0.0.1:8080
-```
+### Ważne ograniczenia
 
-Wyniki buildu:
+- Duże projekty mogą przekroczyć dostępny limit pamięci przeglądarki, szczególnie na telefonach.
+- Niestandardowe rozszerzenia mogą wymagać połączenia z Internetem podczas konwersji i działają bez sandboxa w wygenerowanej grze.
+- Wygenerowana gra może nadal łączyć się z usługami zewnętrznymi, jeżeli korzysta z nich oryginalny projekt.
+- Zgodność zależy od bloków, rozszerzeń i funkcji użytych w projekcie.
 
-```text
-dist/index.html
-dist/offline/scratch-to-html-converter.html
-```
+Konwertuj i publikuj wyłącznie projekty, do których masz odpowiednie prawa.
 
-Drugi plik można otworzyć bezpośrednio z dysku. Nie wymaga serwera WWW ani
-instalacji Node.js u osoby korzystającej z konwertera.
+### Licencja i informacje o komponentach
 
-### Wdrożenie na Cloudflare
+Projekt jest udostępniany na licencji [Mozilla Public License 2.0](LICENSE) i wykorzystuje [TurboWarp Packager](https://github.com/TurboWarp/packager). Informacje o autorach i licencjach znajdują się w pliku [NOTICE](NOTICE).
 
-Repozytorium jest przygotowane do **Cloudflare Workers Builds** i statycznych
-assetów Workers. Dokładna instrukcja znajduje się w
-[`docs/CLOUDFLARE.md`](docs/CLOUDFLARE.md).
-
-Najważniejsze ustawienia:
-
-```text
-Production branch: main
-Build command:      npm run build
-Deploy command:     npm run deploy
-Preview command:    npm run deploy:preview
-Root directory:     /
-```
-
-Nazwa Workera w panelu Cloudflare musi odpowiadać wartości `name` w
-`wrangler.jsonc`, domyślnie `scratch-to-html-converter`.
-
-Każdy push do `main` tworzy nową wersję Cloudflare i od razu wdraża ją na
-produkcję. Pozostałe branche mogą otrzymywać wersje podglądowe.
-
-### Wersjonowanie i wydania
-
-Nie twórz GitHub Release przy każdym commicie. Commit jest wersją wdrożenia, ale
-nie powinien być trwałym wydaniem dla użytkownika.
-
-Dla zwykłej zmiany:
-
-```bash
-git add .
-git commit -m "Improve converter interface"
-git push
-```
-
-Cloudflare zbuduje i wdroży nową wersję. Workflow GitHub Actions zachowa również
-krótkoterminowy artefakt z katalogiem `dist`.
-
-Dla publicznego wydania:
-
-```bash
-npm version patch
-git push --follow-tags
-```
-
-Tag `vX.Y.Z` uruchamia workflow, który publikuje GitHub Release z:
-
-- pojedynczym konwerterem offline;
-- archiwum ZIP gotowej strony;
-- automatycznie wygenerowanymi informacjami o zmianach.
-
-Wersja w tagu musi być taka sama jak `version` w `package.json`.
-
-### Aktualizacja TurboWarp Packager
-
-1. Sprawdź nowe wydanie i jego zmiany.
-2. Zmień `tag`, `version` oraz pełny `commit` w `config/upstream.json`.
-3. Wykonaj pełny build.
-4. Przetestuj co najmniej:
-   - prosty projekt Scratch 3;
-   - projekt z dźwiękiem;
-   - projekt ze zmienną chmurową;
-   - projekt z niestandardowym rozszerzeniem;
-   - wersję hostowaną i pojedynczy plik offline.
-5. Dopiero potem zatwierdź zmianę.
-
-### Ograniczenia
-
-- duże projekty mogą wymagać kilkukrotnie więcej pamięci niż rozmiar pliku
-  wejściowego; na telefonach konwersja może zakończyć się błędem;
-- niestandardowe rozszerzenia mogą wymagać sieci podczas konwersji;
-- wygenerowana gra może używać sieci, jeżeli wybierzesz serwerowe zmienne
-  chmurowe albo sam projekt korzysta z usług zewnętrznych;
-- zgodność zależy od funkcji i rozszerzeń użytych przez konkretny projekt;
-- plik wynikowy zawiera cały projekt i runtime, więc może być znacznie większy
-  niż plik `.sb3`.
-
-### Prywatność
-
-Sam plik projektu jest przetwarzany w przeglądarce. Aplikacja nie ma backendu,
-kont ani własnej analityki. Szczegóły i granice tej deklaracji opisuje
-[`PRIVACY.md`](PRIVACY.md).
-
-### Struktura
-
-```text
-config/upstream.json       przypięta wersja TurboWarp Packager
-overrides/                 interfejs i branding nakładane na upstream
-scripts/build.mjs          powtarzalny build wersji online i offline
-static/                    własne statyczne pliki strony
-docs/CLOUDFLARE.md         wdrożenie GitHub → Cloudflare
-docs/DECISIONS.md          ryzyka, kontrargumenty i odrzucone alternatywy
-docs/TESTING.md            macierz testów przed wydaniem
-.github/workflows/         CI, artefakty i wydania tagowane
-wrangler.jsonc             konfiguracja statycznych assetów Cloudflare
-```
-
----
-
-## English
-
-### Features
-
-- converts `.sb`, `.sb2`, and `.sb3` projects to one `.html` file;
-- processes the project locally in the browser;
-- provides Polish and English UI with a remembered selection;
-- supports drag and drop;
-- offers Turbo, interpolation, autoplay, player controls, fullscreen, and cloud-variable settings;
-- builds both a hosted site and a single-file offline converter;
-- deploys every push to `main` through Cloudflare Workers Builds;
-- creates permanent GitHub Releases only for version tags.
-
-### Developer setup
-
-Requirements: Node.js 24+, Git, and Internet access for the first build.
-
-```bash
-npm install
-npm run verify
-npm run build
-npm run serve
-```
-
-Open `http://127.0.0.1:8080`. The standalone offline converter is generated as
-`dist/offline/scratch-to-html-converter.html` and can be opened directly from
-disk.
-
-### Cloudflare deployment
-
-Use Cloudflare Workers Builds with:
-
-```text
-Production branch: main
-Build command:      npm run build
-Deploy command:     npm run deploy
-Preview command:    npm run deploy:preview
-Root directory:     /
-```
-
-See [`docs/CLOUDFLARE.md`](docs/CLOUDFLARE.md) for the complete setup. The
-architecture trade-offs are documented in [`docs/DECISIONS.md`](docs/DECISIONS.md),
-and the release test matrix is in [`docs/TESTING.md`](docs/TESTING.md).
-
-### Releases
-
-A normal push creates a Cloudflare deployment and a temporary GitHub Actions
-artifact. A tag creates a durable GitHub Release:
-
-```bash
-npm version patch
-git push --follow-tags
-```
-
-### License and attribution
-
-This repository is licensed under the Mozilla Public License 2.0. It is based on
-TurboWarp Packager, which is also MPL-2.0. See [`LICENSE`](LICENSE) and
-[`NOTICE`](NOTICE).
-
-Scratch is a project of the Scratch Foundation. This repository is independent
-and is not affiliated with or endorsed by the Scratch Foundation or TurboWarp.
-Only convert and publish projects for which you have the necessary rights.
+Scratch jest projektem Scratch Foundation. To repozytorium jest niezależne i nie jest powiązane ani oficjalnie wspierane przez Scratch Foundation lub TurboWarp.

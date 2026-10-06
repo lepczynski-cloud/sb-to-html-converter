@@ -7,22 +7,23 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const failures = [];
 const absolute = (relativePath) => path.join(root, relativePath);
 const read = (relativePath) => readFileSync(absolute(relativePath), 'utf8');
+
 const requireFile = (relativePath) => {
   if (!existsSync(absolute(relativePath)) || !statSync(absolute(relativePath)).isFile()) {
     failures.push(`Missing required file: ${relativePath}`);
   }
 };
+
 const forbidPath = (relativePath) => {
-  if (existsSync(absolute(relativePath))) failures.push(`Obsolete path must be removed: ${relativePath}`);
+  if (existsSync(absolute(relativePath))) {
+    failures.push(`Obsolete or unwanted path must be removed: ${relativePath}`);
+  }
 };
 
 const requiredFiles = [
   '.gitattributes',
   '.gitignore',
   '.node-version',
-  '.github/dependabot.yml',
-  '.github/workflows/ci.yml',
-  '.github/workflows/release.yml',
   'README.md',
   'LICENSE',
   'NOTICE',
@@ -46,11 +47,11 @@ const requiredFiles = [
 requiredFiles.forEach(requireFile);
 
 [
+  '.github/workflows',
   'CHANGELOG.md',
   'CONTRIBUTING.md',
   'PRIVACY.md',
-  'docs',
-  '.github/ISSUE_TEMPLATE'
+  'docs'
 ].forEach(forbidPath);
 
 if (failures.length === 0) {
@@ -62,13 +63,13 @@ if (failures.length === 0) {
   const brandSource = read('overrides/src/packager/brand.js');
   const templateSource = read('overrides/src/p4/template.ejs');
   const gitignore = read('.gitignore');
-  const releaseWorkflow = read('.github/workflows/release.yml');
-  const ciWorkflow = read('.github/workflows/ci.yml');
   const domain = 'sbtohtml.lepczynski.it';
 
   if (packageJSON.license !== 'MPL-2.0') failures.push('package.json must use MPL-2.0.');
   if (packageJSON.name !== 'sb-to-html-converter') failures.push('package.json name is incorrect.');
-  if (packageJSON.description.includes('Scratch')) failures.push('The repository description should use file formats rather than Scratch as the product name.');
+  if (packageJSON.description.includes('Scratch')) {
+    failures.push('The repository description should use file formats rather than Scratch as the product name.');
+  }
   if (packageJSON.homepage !== `https://${domain}`) failures.push('package.json homepage is incorrect.');
   if (packageJSON.repository?.url !== 'https://github.com/lepczynski-cloud/sb-to-html-converter.git') {
     failures.push('package.json repository URL is incorrect.');
@@ -77,6 +78,15 @@ if (failures.length === 0) {
     failures.push('package.json issues URL is incorrect.');
   }
   if (!/^\d+\.\d+\.\d+$/.test(packageJSON.version)) failures.push('App version must be SemVer.');
+  if (packageJSON.scripts?.build !== 'npm run verify && node scripts/build.mjs && npm run verify:dist') {
+    failures.push('The build script must validate sources and generated output.');
+  }
+  if (packageJSON.scripts?.deploy !== 'wrangler deploy') {
+    failures.push('The production deploy script must run wrangler deploy.');
+  }
+  if (packageJSON.scripts?.['deploy:preview'] !== 'wrangler preview') {
+    failures.push('The preview deploy script must run wrangler preview.');
+  }
 
   if (upstream.tag !== `v${upstream.version}`) failures.push('Pinned upstream tag and version do not match.');
   if (!/^v\d+\.\d+\.\d+$/.test(upstream.tag)) failures.push('Upstream tag must be an exact release tag.');
@@ -84,6 +94,10 @@ if (failures.length === 0) {
 
   if (wrangler.name !== 'sb-to-html-converter') failures.push('wrangler.jsonc Worker name is incorrect.');
   if (wrangler.workers_dev !== false) failures.push('wrangler.jsonc must disable the production workers.dev route.');
+  if (wrangler.preview_urls !== true) failures.push('wrangler.jsonc must enable Preview URLs.');
+  if (!wrangler.previews || typeof wrangler.previews !== 'object' || Array.isArray(wrangler.previews)) {
+    failures.push('wrangler.jsonc must contain a previews object for Worker Previews.');
+  }
   const customDomain = wrangler.routes?.find((route) => route.pattern === domain && route.custom_domain === true);
   if (!customDomain) failures.push('wrangler.jsonc does not configure the expected custom domain.');
   if (wrangler.assets?.directory !== './dist') failures.push('wrangler.jsonc must publish ./dist.');
@@ -101,7 +115,9 @@ if (failures.length === 0) {
   if (readme.includes('Metadane repozytorium') || readme.includes('Repository metadata')) {
     failures.push('README contains unnecessary repository metadata.');
   }
-  if (readme.includes('Cloudflare')) failures.push('README should describe the online and offline versions without deployment details.');
+  if (readme.includes('Cloudflare')) {
+    failures.push('README should describe the online and offline versions without deployment details.');
+  }
 
   for (const phrase of [
     'pl:',
@@ -119,7 +135,9 @@ if (failures.length === 0) {
   if (interfaceSource.includes('innerHTML')) failures.push('Avoid innerHTML in the browser interface.');
   if (interfaceSource.includes('<svelte:head>')) failures.push('The interface must not create duplicate title or description elements.');
   if (!brandSource.includes(`https://${domain}`)) failures.push('Branding does not point to the public website.');
-  if (!brandSource.includes('lepczynski-cloud/sb-to-html-converter')) failures.push('Branding does not point to the GitHub repository.');
+  if (!brandSource.includes('lepczynski-cloud/sb-to-html-converter')) {
+    failures.push('Branding does not point to the GitHub repository.');
+  }
   if (!templateSource.includes(`https://${domain}/`)) failures.push('The HTML template does not contain the canonical website URL.');
   if ((templateSource.match(/<meta name="description"/g) || []).length !== 1) {
     failures.push('The HTML template must contain exactly one description meta tag.');
@@ -127,13 +145,6 @@ if (failures.length === 0) {
 
   for (const entry of ['node_modules/', 'dist/', '.cache/', '.wrangler/', '.DS_Store']) {
     if (!gitignore.includes(entry)) failures.push(`.gitignore is missing: ${entry}`);
-  }
-
-  if (!releaseWorkflow.includes('dist/offline/sb-to-html-converter.html')) {
-    failures.push('Release workflow uses an incorrect offline filename.');
-  }
-  if (!ciWorkflow.includes('actions/checkout@v7') || !ciWorkflow.includes('actions/setup-node@v7')) {
-    failures.push('CI workflow does not use the expected current GitHub Actions versions.');
   }
 }
 
@@ -148,7 +159,9 @@ const walk = (directory) => {
   return files;
 };
 
-const textExtensions = new Set(['', '.cjs', '.css', '.ejs', '.html', '.js', '.json', '.jsonc', '.md', '.mjs', '.svelte', '.txt', '.yml', '.yaml']);
+const textExtensions = new Set([
+  '', '.cjs', '.css', '.ejs', '.html', '.js', '.json', '.jsonc', '.md', '.mjs', '.svelte', '.txt', '.yml', '.yaml'
+]);
 const forbiddenStrings = [
   'scratch-to-html-converter',
   'scratch2html.lepczynski.it',
@@ -180,4 +193,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log('Repository structure, naming, documentation order, hidden files, and JavaScript syntax checks passed.');
+console.log('Repository structure, naming, deployment configuration, documentation order, and JavaScript syntax checks passed.');

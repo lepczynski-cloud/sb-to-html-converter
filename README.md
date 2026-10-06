@@ -31,7 +31,6 @@ Requirements:
 git clone https://github.com/lepczynski-cloud/sb-to-html-converter.git
 cd sb-to-html-converter
 npm install
-npm run verify
 npm run build
 ```
 
@@ -97,7 +96,6 @@ Wymagania:
 git clone https://github.com/lepczynski-cloud/sb-to-html-converter.git
 cd sb-to-html-converter
 npm install
-npm run verify
 npm run build
 ```
 

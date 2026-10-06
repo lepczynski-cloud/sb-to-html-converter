@@ -1,10 +1,10 @@
 # SB to HTML Converter
 
-Convert Scratch `.sb`, `.sb2`, and `.sb3` project files into a standalone HTML file that can be opened in a modern browser.
+## English
+
+Convert `.sb`, `.sb2`, and `.sb3` project files into a standalone HTML file that can be opened in a modern browser.
 
 **Online version:** [sbtohtml.lepczynski.it](https://sbtohtml.lepczynski.it)
-
-## English
 
 ### Use the online converter
 
@@ -13,13 +13,13 @@ Convert Scratch `.sb`, `.sb2`, and `.sb3` project files into a standalone HTML f
 3. Adjust the optional settings when needed.
 4. Convert the project and download the generated HTML file.
 
-The project is processed locally in the browser and is not uploaded to this application's server.
+The project file is processed locally in the browser and is not uploaded to this application's server.
 
 ### Use the converter offline
 
-Download the standalone HTML converter from the [latest GitHub release](https://github.com/lepczynski-cloud/sb-to-html-converter/releases/latest), then open it directly in a current version of Chrome, Edge, Firefox, or Safari.
+Download the standalone HTML converter from the [latest GitHub release](https://github.com/lepczynski-cloud/sb-to-html-converter/releases/latest) and open it directly in a current version of Chrome, Edge, Firefox, or Safari.
 
-You can also build the offline converter from source.
+You can also build it from source.
 
 Requirements:
 
@@ -68,6 +68,10 @@ Scratch is a project of the Scratch Foundation. This repository is independent a
 
 ## Polski
 
+Konwerter zmienia pliki projektów `.sb`, `.sb2` i `.sb3` w samodzielny plik HTML, który można otworzyć w nowoczesnej przeglądarce.
+
+**Wersja online:** [sbtohtml.lepczynski.it](https://sbtohtml.lepczynski.it)
+
 ### Użycie wersji online
 
 1. Otwórz [konwerter online](https://sbtohtml.lepczynski.it).
@@ -75,13 +79,13 @@ Scratch is a project of the Scratch Foundation. This repository is independent a
 3. W razie potrzeby zmień opcjonalne ustawienia.
 4. Uruchom konwersję i pobierz wygenerowany plik HTML.
 
-Projekt jest przetwarzany lokalnie w przeglądarce i nie jest wysyłany na serwer tej aplikacji.
+Plik projektu jest przetwarzany lokalnie w przeglądarce i nie jest wysyłany na serwer tej aplikacji.
 
 ### Użycie konwertera offline
 
 Pobierz samodzielny konwerter HTML z [najnowszego wydania na GitHubie](https://github.com/lepczynski-cloud/sb-to-html-converter/releases/latest), a następnie otwórz go bezpośrednio w aktualnej wersji Chrome, Edge, Firefox lub Safari.
 
-Konwerter offline można również zbudować ze źródeł.
+Możesz go również zbudować ze źródeł.
 
 Wymagania:
 

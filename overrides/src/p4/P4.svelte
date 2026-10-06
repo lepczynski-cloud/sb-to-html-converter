@@ -1,5 +1,5 @@
 <script>
-  import {onMount} from 'svelte';
+  import {onDestroy, onMount} from 'svelte';
   import loadProject from '../packager/load-project';
   import Packager from '../packager/web/export';
   import {isStandalone, version} from './environment';
@@ -47,6 +47,7 @@
       convert: 'Konwertuj i pobierz HTML',
       cancel: 'Anuluj',
       downloaded: 'Pobrano:',
+      downloadAgain: 'Pobierz ponownie',
       offlineTitle: 'Konwerter również bez Internetu',
       offlineText: 'Pobierz pojedynczy plik HTML z całym konwerterem. Potem możesz otworzyć go bezpośrednio z dysku w nowoczesnej przeglądarce.',
       offlineButton: 'Pobierz konwerter offline',
@@ -123,6 +124,7 @@
       convert: 'Convert and download HTML',
       cancel: 'Cancel',
       downloaded: 'Downloaded:',
+      downloadAgain: 'Download again',
       offlineTitle: 'Use the converter without Internet access',
       offlineText: 'Download one HTML file containing the complete converter. You can later open it directly from disk in a modern browser.',
       offlineButton: 'Download offline converter',
@@ -170,6 +172,7 @@
   let statusKey = 'ready';
   let errorMessage = '';
   let resultName = '';
+  let downloadURL = '';
   let currentLoadTask = null;
   let currentPackager = null;
 
@@ -207,10 +210,22 @@
   function setLanguage(nextLanguage) {
     language = nextLanguage === 'pl' ? 'pl' : 'en';
     document.documentElement.lang = language;
+    document.title = dictionaries[language].pageTitle;
+    const description = document.querySelector('meta[name="description"]');
+    if (description) description.setAttribute('content', dictionaries[language].metaDescription);
     try {
       localStorage.setItem('sb-to-html-language', language);
     } catch (error) {}
   }
+
+  function clearDownload() {
+    if (downloadURL) {
+      URL.revokeObjectURL(downloadURL);
+      downloadURL = '';
+    }
+  }
+
+  onDestroy(clearDownload);
 
   function formatBytes(bytes) {
     if (!Number.isFinite(bytes) || bytes < 1) return '0 B';
@@ -247,6 +262,7 @@
   }
 
   function chooseFile(file) {
+    clearDownload();
     errorMessage = '';
     resultName = '';
     progress = 0;
@@ -281,6 +297,7 @@
 
   function removeSelectedFile() {
     if (busy) return;
+    clearDownload();
     selectedFile = null;
     gameTitle = '';
     resultName = '';
@@ -364,6 +381,7 @@
     }
     if (busy) return;
 
+    clearDownload();
     busy = true;
     cancelled = false;
     errorMessage = '';
@@ -373,6 +391,10 @@
 
     try {
       currentLoadTask = await loadProject.fromFile(selectedFile, updateLoadingProgress);
+      if (cancelled) {
+        currentLoadTask.terminate();
+        throw new Error('Cancelled');
+      }
       const project = await currentLoadTask.promise;
       currentLoadTask = null;
       if (cancelled) throw new Error('Cancelled');
@@ -406,15 +428,14 @@
       setProgress(0.96);
       const outputName = `${safeFileName(gameTitle)}.html`;
       const blob = new Blob([result.data], {type: result.type || 'text/html'});
-      const objectURL = URL.createObjectURL(blob);
+      downloadURL = URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.href = objectURL;
+      link.href = downloadURL;
       link.download = outputName;
       link.style.display = 'none';
       document.body.appendChild(link);
       link.click();
       link.remove();
-      window.setTimeout(() => URL.revokeObjectURL(objectURL), 30000);
 
       resultName = outputName;
       statusKey = 'done';
@@ -448,11 +469,6 @@
   }
 </script>
 
-<svelte:head>
-  <title>{t.pageTitle}</title>
-  <meta name="description" content={t.metaDescription}>
-</svelte:head>
-
 <div class="page">
   <header class="topbar">
     <a class="brand" href={isStandalone ? WEBSITE : './'} aria-label={t.brand}>
@@ -469,16 +485,16 @@
     <div class="language-switcher" aria-label={t.language}>
       <button
         type="button"
-        class:active={language === 'pl'}
-        aria-pressed={language === 'pl'}
-        on:click={() => setLanguage('pl')}
-      >PL</button>
-      <button
-        type="button"
         class:active={language === 'en'}
         aria-pressed={language === 'en'}
         on:click={() => setLanguage('en')}
       >EN</button>
+      <button
+        type="button"
+        class:active={language === 'pl'}
+        aria-pressed={language === 'pl'}
+        on:click={() => setLanguage('pl')}
+      >PL</button>
     </div>
   </header>
 
@@ -641,9 +657,11 @@
           {/if}
         </div>
 
-        {#if resultName && statusKey === 'done'}
+        {#if resultName && downloadURL && statusKey === 'done'}
           <div class="success-message" role="status">
-            <span aria-hidden="true">✓</span>{t.downloaded} <strong>{resultName}</strong>
+            <span aria-hidden="true">✓</span>
+            <div>{t.downloaded} <strong>{resultName}</strong></div>
+            <a class="download-again" href={downloadURL} download={resultName}>{t.downloadAgain}</a>
           </div>
         {/if}
       {/if}
@@ -941,6 +959,10 @@
     text-align: center;
     transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
   }
+  .file-input:focus-visible + .drop-zone {
+    outline: 3px solid rgba(88, 101, 242, 0.35);
+    outline-offset: 3px;
+  }
   .drop-zone:hover, .drop-zone.dragging {
     border-color: var(--primary);
     background: var(--primary-soft);
@@ -1224,9 +1246,15 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
     color: #157144;
     font-size: 0.84rem;
     overflow-wrap: anywhere;
+  }
+  .download-again {
+    margin-left: auto;
+    color: var(--primary-dark);
+    font-weight: 800;
   }
   .success-message > span {
     width: 22px;

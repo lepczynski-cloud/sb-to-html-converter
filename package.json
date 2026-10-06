@@ -1,8 +1,8 @@
 {
   "name": "sb-to-html-converter",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
-  "description": "Convert Scratch .sb, .sb2 and .sb3 projects to standalone HTML files in the browser or with the offline converter.",
+  "description": "Convert .sb, .sb2 and .sb3 project files into standalone HTML directly in your browser or offline.",
   "license": "MPL-2.0",
   "author": "Wojciech Lepczynski",
   "homepage": "https://sbtohtml.lepczynski.it",
@@ -14,8 +14,8 @@
     "url": "https://github.com/lepczynski-cloud/sb-to-html-converter/issues"
   },
   "keywords": [
-    "scratch",
-    "scratch3",
+    "sb",
+    "sb2",
     "sb3",
     "html",
     "converter",

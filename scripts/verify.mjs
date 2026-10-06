@@ -25,6 +25,9 @@ const requiredFiles = [
   '.gitignore',
   '.node-version',
   'README.md',
+  'assets/readme/app-preview.png',
+  'assets/readme/how-it-works-en.png',
+  'assets/readme/how-it-works-pl.png',
   'LICENSE',
   'NOTICE',
   'SECURITY.md',
@@ -42,12 +45,13 @@ const requiredFiles = [
   'static/404.html',
   'static/favicon.svg',
   'static/privacy.html',
-  'static/robots.txt'
+  'static/robots.txt',
+  'static/social-preview.png'
 ];
 requiredFiles.forEach(requireFile);
 
 [
-  '.github/workflows',
+  '.github',
   'CHANGELOG.md',
   'CONTRIBUTING.md',
   'PRIVACY.md',
@@ -139,6 +143,14 @@ if (failures.length === 0) {
     failures.push('Branding does not point to the GitHub repository.');
   }
   if (!templateSource.includes(`https://${domain}/`)) failures.push('The HTML template does not contain the canonical website URL.');
+  if (!templateSource.includes(`https://${domain}/social-preview.png`)) failures.push('The HTML template does not contain the social preview image URL.');
+  if (!templateSource.includes('name="twitter:card" content="summary_large_image"')) failures.push('The HTML template does not configure a large social card.');
+  if ((interfaceSource.match(/Scratch/g) || []).length > 4) failures.push('The interface uses Scratch more often than needed for compatibility and independence notices.');
+  for (const phrase of ['Scratch project', 'projekt Scratch', 'Drop a Scratch', 'Choose a Scratch']) {
+    if (interfaceSource.includes(phrase)) failures.push(`Avoid product-like Scratch wording in the interface: ${phrase}`);
+  }
+  if (!interfaceSource.includes('Works with project files exported from Scratch.')) failures.push('The English compatibility statement is missing.');
+  if (!interfaceSource.includes('SB to HTML Converter is not affiliated with or endorsed by the Scratch Foundation.')) failures.push('The English independence notice is missing.');
   if ((templateSource.match(/<meta name="description"/g) || []).length !== 1) {
     failures.push('The HTML template must contain exactly one description meta tag.');
   }

@@ -8,11 +8,12 @@
   const dictionaries = {
     pl: {
       pageTitle: 'SB do HTML | konwerter działający lokalnie',
-      metaDescription: 'Zamień projekt Scratch .sb, .sb2 lub .sb3 w samodzielny plik HTML bez wysyłania projektu na serwer.',
+      metaDescription: 'Zamień plik projektu .sb, .sb2 lub .sb3 w samodzielny plik HTML bez wysyłania go na serwer.',
       brand: 'SB → HTML',
       localBadge: 'Przetwarzanie lokalne',
-      heroTitle: 'Zamień projekt Scratch w samodzielny plik HTML',
-      heroText: 'Upuść plik .sb, .sb2 lub .sb3. Konwersja odbywa się w Twojej przeglądarce, a gotową grę pobierzesz jako jeden plik HTML.',
+      heroTitle: 'Zamień plik .sb, .sb2 lub .sb3 w samodzielny HTML',
+      heroText: 'Wybierz plik projektu. Konwersja odbywa się w Twojej przeglądarce, a gotowy projekt pobierzesz jako jeden plik HTML.',
+      compatibilityText: 'Działa z plikami projektów wyeksportowanymi z edytora Scratch.',
       stepOneTitle: 'Wybierz projekt',
       stepOneText: 'Przeciągnij plik albo wybierz go z dysku.',
       stepTwoTitle: 'Ustaw opcje',
@@ -21,7 +22,7 @@
       stepThreeText: 'Otwórz wynik lokalnie lub umieść go na stronie.',
       workflow: 'Jak to działa',
       converterTitle: 'Konwerter',
-      dropTitle: 'Upuść projekt Scratch tutaj',
+      dropTitle: 'Upuść plik projektu tutaj',
       dropText: 'lub kliknij, aby wybrać plik',
       formats: 'Obsługiwane formaty: .sb, .sb2, .sb3',
       selectedFile: 'Wybrany plik',
@@ -58,7 +59,7 @@
       limitsTitle: 'Ważne ograniczenia',
       limitsText: 'Duże projekty mogą przekroczyć limit pamięci telefonu lub przeglądarki. Zgodność zależy również od rozszerzeń i funkcji użytych w projekcie.',
       rightsTitle: 'Publikuj odpowiedzialnie',
-      rightsText: 'Konwertuj i udostępniaj tylko projekty, do których masz odpowiednie prawa. Ten projekt jest niezależny od Scratch Foundation i TurboWarp.',
+      rightsText: 'Konwertuj i udostępniaj tylko projekty, do których masz odpowiednie prawa. SB to HTML Converter nie jest powiązany ani wspierany przez Scratch Foundation.',
       privacyLink: 'Pełna informacja o prywatności',
       sourceCode: 'Kod źródłowy',
       basedOn: 'Oparte na TurboWarp Packager',
@@ -66,7 +67,7 @@
       language: 'Język',
       browserUnsupported: 'Ta przeglądarka nie obsługuje funkcji wymaganych do konwersji. Użyj aktualnej wersji Chrome, Edge, Firefox albo Safari.',
       status: {
-        ready: 'Wybierz projekt Scratch.',
+        ready: 'Wybierz plik projektu.',
         selected: 'Plik jest gotowy do konwersji.',
         reading: 'Odczytywanie i analizowanie projektu…',
         assets: 'Przetwarzanie zasobów projektu…',
@@ -79,17 +80,18 @@
       },
       errors: {
         invalidFile: 'Wybierz plik z rozszerzeniem .sb, .sb2 albo .sb3.',
-        noFile: 'Najpierw wybierz projekt Scratch.',
+        noFile: 'Najpierw wybierz plik projektu.',
         failed: 'Nie udało się utworzyć pliku HTML.'
       }
     },
     en: {
       pageTitle: 'SB to HTML Converter | Local browser converter',
-      metaDescription: 'Convert a Scratch .sb, .sb2 or .sb3 project to a standalone HTML file without uploading the project to a server.',
+      metaDescription: 'Convert an .sb, .sb2 or .sb3 project file to standalone HTML without uploading it to a server.',
       brand: 'SB → HTML',
       localBadge: 'Local processing',
-      heroTitle: 'Turn a Scratch project into a standalone HTML file',
-      heroText: 'Drop an .sb, .sb2 or .sb3 file. The conversion runs in your browser and downloads the finished game as a single HTML file.',
+      heroTitle: 'Turn an .sb, .sb2 or .sb3 file into standalone HTML',
+      heroText: 'Choose a project file. Conversion runs in your browser and downloads the finished project as a single HTML file.',
+      compatibilityText: 'Works with project files exported from Scratch.',
       stepOneTitle: 'Choose a project',
       stepOneText: 'Drop a file or select one from your device.',
       stepTwoTitle: 'Choose options',
@@ -98,7 +100,7 @@
       stepThreeText: 'Open it locally or publish it on a website.',
       workflow: 'How it works',
       converterTitle: 'Converter',
-      dropTitle: 'Drop a Scratch project here',
+      dropTitle: 'Drop a project file here',
       dropText: 'or click to choose a file',
       formats: 'Supported formats: .sb, .sb2, .sb3',
       selectedFile: 'Selected file',
@@ -135,7 +137,7 @@
       limitsTitle: 'Important limitations',
       limitsText: 'Large projects can exceed a phone or browser memory limit. Compatibility also depends on the extensions and features used by the project.',
       rightsTitle: 'Publish responsibly',
-      rightsText: 'Only convert and share projects for which you have the necessary rights. This project is independent of the Scratch Foundation and TurboWarp.',
+      rightsText: 'Only convert and share projects for which you have the necessary rights. SB to HTML Converter is not affiliated with or endorsed by the Scratch Foundation.',
       privacyLink: 'Full privacy information',
       sourceCode: 'Source code',
       basedOn: 'Based on TurboWarp Packager',
@@ -143,7 +145,7 @@
       language: 'Language',
       browserUnsupported: 'This browser does not support the features required for conversion. Use a current version of Chrome, Edge, Firefox or Safari.',
       status: {
-        ready: 'Choose a Scratch project.',
+        ready: 'Choose a project file.',
         selected: 'The file is ready to convert.',
         reading: 'Reading and analysing the project…',
         assets: 'Processing project assets…',
@@ -156,7 +158,7 @@
       },
       errors: {
         invalidFile: 'Choose a file ending in .sb, .sb2 or .sb3.',
-        noFile: 'Choose a Scratch project first.',
+        noFile: 'Choose a project file first.',
         failed: 'The HTML file could not be created.'
       }
     }
@@ -503,6 +505,7 @@
       <div class="local-badge"><span aria-hidden="true"></span>{t.localBadge}</div>
       <h1>{t.heroTitle}</h1>
       <p class="hero-text">{t.heroText}</p>
+      <p class="compatibility-note">{t.compatibilityText}</p>
 
       <div class="steps" aria-label={t.workflow}>
         <div class="step">
@@ -857,6 +860,18 @@
     color: var(--muted);
     font-size: clamp(1rem, 2vw, 1.18rem);
     line-height: 1.7;
+  }
+  .compatibility-note {
+    width: fit-content;
+    max-width: 100%;
+    margin: 16px auto 0;
+    padding: 7px 12px;
+    border: 1px solid rgba(88, 101, 242, 0.18);
+    border-radius: 999px;
+    color: var(--primary-dark);
+    background: rgba(238, 240, 255, 0.74);
+    font-size: 0.82rem;
+    font-weight: 700;
   }
   .steps {
     margin: 42px auto 0;
@@ -1400,6 +1415,11 @@
     .local-badge {
       color: #81d8ac;
       background: rgba(22, 91, 59, 0.35);
+    }
+    .compatibility-note {
+      border-color: rgba(174, 181, 255, 0.22);
+      color: #c8ccff;
+      background: rgba(37, 44, 84, 0.64);
     }
     .drop-zone {
       border-color: #3b425c;

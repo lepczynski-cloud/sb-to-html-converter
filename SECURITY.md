@@ -13,7 +13,7 @@ project when possible.
 
 ## Trust boundaries
 
-Conversion is performed in the browser. The selected Scratch file is not sent
+Conversion is performed in the browser. The selected project file is not sent
 to this project's server. A generated game may still access the network when it
 uses cloud variables or custom extensions. Custom extensions run without a
 sandbox in the generated game. Only convert projects and load extension sources

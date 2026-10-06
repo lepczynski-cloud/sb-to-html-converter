@@ -1,6 +1,6 @@
 {
   "name": "sb-to-html-converter",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "description": "Convert .sb, .sb2 and .sb3 project files into standalone HTML directly in your browser or offline.",
   "license": "MPL-2.0",

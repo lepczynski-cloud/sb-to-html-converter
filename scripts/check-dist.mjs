@@ -10,7 +10,8 @@ const requiredFiles = [
   'build-info.json',
   'version.txt',
   'LICENSE.txt',
-  'NOTICE.txt'
+  'NOTICE.txt',
+  'social-preview.png'
 ];
 const failures = [];
 
@@ -32,6 +33,9 @@ if (failures.length === 0) {
 
   if (!index.toLowerCase().includes('<!doctype html>')) {
     failures.push('dist/index.html is not an HTML document.');
+  }
+  if (!index.includes('https://sbtohtml.lepczynski.it/social-preview.png')) {
+    failures.push('dist/index.html is missing the social preview image metadata.');
   }
   if (!offline.toLowerCase().includes('<!doctype html>')) {
     failures.push('Offline converter is not an HTML document.');
